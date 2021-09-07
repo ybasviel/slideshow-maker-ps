@@ -1,0 +1,136 @@
+%!PS-Adobe-3.0
+
+%gs -g1920x1080 -sDEVICE=png16m -dTextAlphaBits=4 -r125 -sOutputFile=out/slide%d.png ./read_md.ps <text.md
+
+/inputfile (%stdin) (r) file def
+
+%フォントの設定
+/Gothic /GothicBBB-Medium-UniJIS2004-UTF8-H findfont def
+/Mincho /Ryumin-Light-UniJIS-UTF8-H findfont def
+
+%各テキストの大きさ
+/title_size 60 def
+/subtitle_size 45 def
+/subsubtitle_size 35 def
+/text_size 28 def
+
+
+/show_decorate_text{
+    /fontsize exch def
+    /x exch def
+    /spacing exch def
+
+    /former_line_y former_line_y fontsize spacing add sub def
+
+    x former_line_y moveto
+    /Gothic_scaled Gothic fontsize scalefont def
+    /Mincho_scaled Mincho fontsize scalefont def
+
+    Gothic_scaled setfont
+
+    check_label
+}def
+
+/check_label{
+    %gsave
+    (\\<) search {
+        check_label pop
+
+        (,) search{
+            cvi /r exch def pop
+
+            (,) search{
+                cvi /g exch def pop
+
+                (>) search{
+                    cvi /b exch def pop
+                    r g b setrgbcolor
+
+                    check_label
+                }{
+                    (Color Code Error) == quit
+                }ifelse
+            }{
+                (Color Code Error) == quit
+            }ifelse
+        }{
+            (Color Code Error) == quit
+        }ifelse
+
+    }{
+
+        (\\[) search {
+            check_label pop
+            (]) search{
+                exch pop
+                
+                dup (M) eq{
+                    pop
+                    Mincho_scaled setfont
+                }{
+                    (G) eq{
+                        Gothic_scaled setfont
+                    }{
+                        (Charactor Code Error) == quit
+                    }ifelse
+                }ifelse
+                check_label
+            }{
+                (Charactor Code Error) == quit
+            }ifelse
+
+        }{
+            show
+        }ifelse
+    }ifelse
+    
+    %grestore
+}def
+
+
+/line 0 def
+/former_line_y 600 def
+
+{
+    inputfile 500 string readline
+
+    exch dup 3 1 roll () ne or{
+
+        dup dup () ne exch (<br>) ne and{
+            (### ) search {
+                pop pop 20 60 subsubtitle_size show_decorate_text
+            }{
+                (## ) search {
+                    pop pop 20 50 subtitle_size show_decorate_text
+                }{
+                    (# ) search {
+                        line 0 ne{
+                            gsave stroke showpage grestore
+                            /former_line_y 600 def 
+                        }if
+                        pop pop 10 40 title_size show_decorate_text
+                        /former_line_y former_line_y 20 sub def
+                    }{
+                        10 70 text_size show_decorate_text
+                    }ifelse
+                }ifelse
+            }ifelse
+        }{
+            dup (<br>) eq {
+                /former_line_y former_line_y 20 sub def
+            }if
+            pop
+        }ifelse
+    }{
+	    pop exit
+    }ifelse
+
+
+    /line line 1 add def
+
+}loop
+
+stroke
+showpage
+
+quit
