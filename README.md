@@ -9,6 +9,6 @@
 ## 利用
 
 ```shell
-    gs -g1920x1080 -sDEVICE=png16m -dTextAlphaBits=4 -r125 -sOutputFile=out/slide%d.png ./read_md.ps <text.md
+    gs -g1920x1080 -sDEVICE=png16m -dTextAlphaBits=4 -r125 -sOutputFile=out/slide%d.png ./make-slide.ps <text.md
 ```
 でスライド画像出力
