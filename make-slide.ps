@@ -1,8 +1,12 @@
 %!PS-Adobe-3.0
 
-%gs -g1920x1080 -sDEVICE=png16m -dTextAlphaBits=4 -r125 -sOutputFile=out/slide%d.png ./make-slide.ps <text.md
+%画像出力モード
+%gs -g1920x1080 -sDEVICE=png16m -dTextAlphaBits=4 -r125 -sOutputFile=out/slide%d.png ./make-slide.ps
 
-/inputfile (%stdin) (r) file def
+%発表者モード
+%gs -g1920x1080 -r125  -dNOSAFER ./make-slide.ps
+
+/inputfile (slide.md) (r) file def
 
 %フォントの設定
 /Gothic /GothicBBB-Medium-UniJIS2004-UTF8-H findfont def

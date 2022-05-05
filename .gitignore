@@ -1,3 +1,6 @@
 out/
-text.md
+*.md
+!README.md
 listfont
+*.jpg
+*.eps
