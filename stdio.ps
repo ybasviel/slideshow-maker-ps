@@ -1,0 +1,8 @@
+/stdio_stdin (%stdin) (r) file def
+
+/input {
+    flush
+    stdio_stdin exch readline not {
+        ()
+    } if
+} def
