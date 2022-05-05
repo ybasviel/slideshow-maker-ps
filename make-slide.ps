@@ -10,6 +10,9 @@
 (stdio.ps) run
 
 (Enter Filename> ) print 128 string input
+dup () eq {
+    (Error: Enter Correct Filename\n) print quit
+} if
 /inputfile exch (r) file def
 
 %フォントの設定
@@ -40,7 +43,7 @@
 }def
 
 /check_label{
-    %gsave
+    count 0 ne {
     (\\<) search {
         check_label pop
 
@@ -65,39 +68,57 @@
             (Color Code Error) == quit
         }ifelse
 
-    }{
-
-        (\\[) search {
-            check_label pop
-            (]) search{
-                exch pop
-                
-                dup (M) eq{
-                    pop
-                    Mincho_scaled setfont
-                }{
-                    (G) eq{
-                        Gothic_scaled setfont
-                    }{
-                        (Charactor Code Error) == quit
-                    }ifelse
-                }ifelse
-                check_label
-            }{
-                (Charactor Code Error) == quit
-            }ifelse
-
-        }{
-            show
-        }ifelse
-    }ifelse
+    } if
+    } if
     
-    %grestore
+    count 0 ne {
+    (![]\() search {
+        check_label pop
+        (\)) search{
+            exch pop
+            650 50 translate
+            run /noshowpage true def
+            -650 -50 translate
+        }{
+            (Charactor Code Error) == quit
+        }ifelse
+        check_label
+    } if
+    } if
+    
+
+    count 0 ne {
+    (\\[) search {
+        check_label pop
+        (]) search{
+            exch pop
+            
+            dup (M) eq{
+                pop
+                Mincho_scaled setfont
+            }{
+                (G) eq{
+                    Gothic_scaled setfont
+                }{
+                    (Charactor Code Error) == quit
+                }ifelse
+            }ifelse
+            check_label
+        }{
+            (Charactor Code Error) == quit
+        }ifelse
+    } if
+    } if
+    
+    count 0 ne {
+        show
+    } if
 }def
 
 
 /line 0 def
 /former_line_y 600 def
+/noshowpage false def
 
 {
     inputfile 500 string readline
@@ -113,7 +134,7 @@
                 }{
                     (# ) search {
                         line 0 ne{
-                            gsave stroke showpage grestore
+                            gsave stroke noshowpage { /noshowpage false def }{ showpage  } ifelse grestore
                             /former_line_y 600 def 
                         }if
                         pop pop 10 40 title_size show_decorate_text
