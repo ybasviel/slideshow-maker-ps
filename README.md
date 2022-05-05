@@ -10,6 +10,12 @@
 ## 利用
 
 ```shell
-gs -g1920x1080 -sDEVICE=png16m -dTextAlphaBits=4 -r125 -sOutputFile=out/slide%d.png ./make-slide.ps <text.md
+gs -q -dNOSAFER -g1920x1080 -sDEVICE=png16m -dTextAlphaBits=4 -r125 -sOutputFile=out/slide%d.png ./make-slide.ps
 ```
 でスライド画像出力
+
+
+```shell
+gs -q -g1920x1080 -r125 -dNOSAFER ./make-slide.ps
+```
+で発表者モード
